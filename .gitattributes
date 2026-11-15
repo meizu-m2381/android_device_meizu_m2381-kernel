@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.bp text eol=lf
+
+# Stock kernel image, device tree blob and merged DTB: retrieve with git lfs pull.
+/Image filter=lfs diff=lfs merge=lfs -text
+/dtb.img filter=lfs diff=lfs merge=lfs -text
+/dtb/** filter=lfs diff=lfs merge=lfs -text
