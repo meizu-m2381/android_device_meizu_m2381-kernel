@@ -1,6 +1,0 @@
-// Build-only compatibility header; see include/linux/msm_audio.h for limitations.
-filegroup {
-    name: "m2381_prebuilt_kernel_build_headers",
-    srcs: ["include/linux/msm_audio.h"],
-    visibility: ["//visibility:public"],
-}
