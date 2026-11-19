@@ -7,6 +7,7 @@ Prebuilt kernel inputs for Meizu 20 (`m2381`).
 | `Image` | Stock kernel binary, Linux 5.15 |
 | `dtb.img` | Merged DTB for `vendor_boot.img` |
 | `dtb/m2381.dtb` | Device tree blob, unpacked from stock |
+| `dtb/android/m2381.dtb` | Android adaptation that selects the ramdisk fstab |
 | `include/linux/msm_audio.h` | Build-only compatibility header |
 
 ## Notes
@@ -30,6 +31,21 @@ git lfs pull
 The prebuilt kernel does not ship a full UAPI header tree. `linux/msm_audio.h`
 here exists only to satisfy build-time includes and is not a runtime ABI
 contract.
+
+## Android 分区挂载
+
+原厂 DTB 的 `/firmware/android/fstab` 指向旧 ext4 vendor 分区。独立的
+`dtb/android/m2381.dtb` 仅把这个节点的 `status` 设为 `disabled`，让 init 使用
+ramdisk 内的 EROFS/逻辑分区 fstab。原始 `dtb/m2381.dtb` 保持不变。
+
+使用 AOSP checkout 自带的 libfdt 复现兼容副本并核验固定输入/输出摘要：
+
+```bash
+python3 tools/prepare_android_dtb.py --aosp /path/to/android --apply
+python3 tools/prepare_android_dtb.py --aosp /path/to/android
+```
+
+未知输入或未知的已有输出会被拒绝；不改硬件节点、CPU idle 或启动脚本。
 
 ## 上游预编译头接口
 
